@@ -1,0 +1,1 @@
+export const Header = () => <nav>헤더어어어어</nav>;
