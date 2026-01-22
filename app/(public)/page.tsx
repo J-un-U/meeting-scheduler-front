@@ -1,14 +1,16 @@
 'use client';
 
-import { router } from "next/dist/client";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
+
+  const router = useRouter();
 
   const handleSignIn = () => {
     router.push('/dashboard');
   }
 
-  const handleTest = () => {
+/*  const handleTest = () => {
     fetch('api/meetings', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -19,11 +21,11 @@ const Login = () => {
         maxParticipants: 5,
       }),
     }).then(res => res.json()).then(data => console.log(data));
-  }
+  }*/
 
   return (
     <div className="flex w-full max-w-md flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-      <form className="flex flex-col w-full space-y-2" action={handleTest}>
+      <form className="flex flex-col w-full space-y-2" action={handleSignIn}>
         <label htmlFor="id">Id</label>
         <input type="text" id="id" name="id" required className="border border-zinc-300 dark:border-zinc-700"/>
         <label htmlFor="password">Password</label>
@@ -37,5 +39,6 @@ const Login = () => {
     </div>
   )
 };
+
 
 export default Login;
