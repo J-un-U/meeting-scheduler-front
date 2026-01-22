@@ -28,10 +28,10 @@ const Sidebar = ({ children }: SidebarProps) => {
 
   return (
     <nav
-      className="bg-green-300 w-20"
-      style={{ 
+      className="col-start-1 row-start-2 bg-green-300 w-20"
+      style={{
         height: `calc(100vh - ${gnbHeight}px)`,
-        position: 'fixed', // 또는 sticky
+        position: 'sticky',
         top: `${gnbHeight}px`,
         left: 0
       }}

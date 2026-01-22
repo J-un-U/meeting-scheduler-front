@@ -1,5 +1,6 @@
 import Header from "@/app/components/layout/Header";
 import Sidebar from "@/app/components/layout/Sidebar";
+import Content from "@/app/components/layout/Content";
 
 const Dashboard = () => {
   return(
@@ -13,6 +14,9 @@ const Dashboard = () => {
       <Sidebar>
         <div>사이드바</div>
       </Sidebar>
+      <Content>
+        <div>내용</div>
+      </Content>
     </>
   )
 };

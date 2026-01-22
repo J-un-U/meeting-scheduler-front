@@ -7,6 +7,6 @@ interface HeaderProps {
 }
 
 const Header = ({ children }: HeaderProps
-) => <nav className={"gnb bg-green-500 px-6 py-4"}>{children}</nav>;
+) => <nav className={"col-span-2 row-start-1 sticky top-0 bg-green-500 px-6 py-4"}>{children}</nav>;
 
 export default Header;

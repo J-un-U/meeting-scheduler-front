@@ -3,7 +3,7 @@ type Props = {
 };
 
 const PrivateLayout = async ({ children }: Props) => (
-  <div>
+  <div className={"grid grid-cols-[auto_1fr] grid-rows-[auto_1fr]"}>
     {children}
   </div>
 );
