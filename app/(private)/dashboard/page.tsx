@@ -40,7 +40,14 @@ const Dashboard = () => {
         title="제목"
         footer={<button className="rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white" onClick={closeCreateMeeting}>확인</button>}
       >
-        <div>모달 내용</div>
+        <form className={"flex flex-col gap-2"}>
+          <label htmlFor="title">약속 제목</label>
+          <input id={"title"} type="text"/>
+          <label htmlFor="description">약속 설명</label>
+          <textarea id={"description"}/>
+          <label htmlFor="title">최대 인원</label>
+          <select id={"maxParticipants"}></select>
+        </form>
       </Modal>
     </>
   )
