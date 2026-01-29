@@ -31,6 +31,8 @@ const Dashboard = () => {
       <Content>
         <div>내용</div>
       </Content>
+
+      {/* -----------약속 만들기 모달----------- */}
       <Modal
         isOpen={isCreateMeetingOpen}
         onClose={closeCreateMeeting}
