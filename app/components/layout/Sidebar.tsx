@@ -28,7 +28,7 @@ const Sidebar = ({ children }: SidebarProps) => {
 
   return (
     <nav
-      className="col-start-1 row-start-2 bg-green-300 w-20"
+      className="snb col-start-1 row-start-2 bg-green-300 w-20"
       style={{
         height: `calc(100vh - ${gnbHeight}px)`,
         position: 'sticky',
