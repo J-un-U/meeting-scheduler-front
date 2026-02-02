@@ -8,10 +8,10 @@ import Modal from "@/app/components/Modal";
 import { DatePicker } from "@/app/components/date-picker/DatePicker";
 
 type CreateMeetingModalProps = {
-  onCreated?: () => void;
+  onCreatedAction?: () => void;
 };
 
-export default function CreateMeetingModal({ onCreated }: CreateMeetingModalProps) {
+export default function CreateMeetingModal({ onCreatedAction }: CreateMeetingModalProps) {
   const [isCreateMeetingOpen, setIsCreateMeetingOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -105,7 +105,7 @@ export default function CreateMeetingModal({ onCreated }: CreateMeetingModalProp
       setMaxParticipants("1");
       setErrors({});
       closeCreateMeeting();
-      onCreated?.();
+      onCreatedAction?.();
     } catch (error) {
       console.error("Failed to create meeting.", error);
     }

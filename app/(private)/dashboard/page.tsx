@@ -19,7 +19,7 @@ const Dashboard = () => {
       <Header>
         <div className={"flex items-center justify-between"}>
           <button>미팅 스케쥴러</button>
-          <CreateMeetingModal onCreated={handleCreated} />
+          <CreateMeetingModal onCreatedAction={handleCreated} />
         </div>
       </Header>
       <Sidebar>
