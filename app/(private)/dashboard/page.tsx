@@ -14,17 +14,17 @@ const Dashboard = () => {
   const [isCreateMeetingOpen, setIsCreateMeetingOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [month, setMonth] = useState<dayjs.Dayjs | null>(null);
+  const [date, setDate] = useState<dayjs.Dayjs | null>(null);
   const [maxParticipants, setMaxParticipants] = useState("10");
   const [errors, setErrors] = useState<{
     title?: string;
     description?: string;
-    month?: string;
+    date?: string;
     maxParticipants?: string;
   }>({});
   const titleRef = useRef<HTMLInputElement | null>(null);
   const descriptionRef = useRef<HTMLTextAreaElement | null>(null);
-  const monthFieldRef = useRef<HTMLDivElement | null>(null);
+  const dateFieldRef = useRef<HTMLDivElement | null>(null);
   const maxParticipantsRef = useRef<HTMLSelectElement | null>(null);
 
   const openCreateMeeting = () => {
@@ -41,18 +41,15 @@ const Dashboard = () => {
     const nextErrors: {
       title?: string;
       description?: string;
-      month?: string;
+      date?: string;
       maxParticipants?: string;
     } = {};
 
     if (!title.trim()) {
-      nextErrors.title = "필수값 입력";
+      nextErrors.title = "제목을 적어주셔야 해요!";
     }
-    if (!description.trim()) {
-      nextErrors.description = "필수값 입력";
-    }
-    if (!month) {
-      nextErrors.month = "필수값 입력";
+    if (!date) {
+      nextErrors.date = "날짜가 있어야 해요!";
     }
     if (!maxParticipants) {
       nextErrors.maxParticipants = "필수값 입력";
@@ -65,8 +62,8 @@ const Dashboard = () => {
         titleRef.current?.focus();
       } else if (nextErrors.description) {
         descriptionRef.current?.focus();
-      } else if (nextErrors.month) {
-        monthFieldRef.current?.querySelector("button")?.focus();
+      } else if (nextErrors.date) {
+        dateFieldRef.current?.querySelector("button")?.focus();
       } else if (nextErrors.maxParticipants) {
         maxParticipantsRef.current?.focus();
       }
@@ -78,10 +75,10 @@ const Dashboard = () => {
       title,
       description,
       ownerUserId: 1,
-      meetingType: "DATE_RANGE",
+      meetingType: "SINGLE_DATE",
       maxParticipants: Number(maxParticipants),
-      agreedStartDate: month ? month.startOf("month").format("YYYY-MM-DD") : null,
-      agreedEndDate: month ? month.endOf("month").format("YYYY-MM-DD") : null,
+      agreedStartDate: date ? date.startOf("month").format("YYYY-MM-DD") : null,
+      agreedEndDate: date ? date.endOf("month").format("YYYY-MM-DD") : null,
       agreedDate: null,
       startTime: null,
       endTime: null,
@@ -103,7 +100,7 @@ const Dashboard = () => {
 
       setTitle("");
       setDescription("");
-      setMonth(null);
+      setDate(null);
       setMaxParticipants("1");
       setErrors({});
       closeCreateMeeting();
@@ -132,7 +129,7 @@ const Dashboard = () => {
         isOpen={isCreateMeetingOpen}
         onClose={closeCreateMeeting}
         size="sm"
-        title="제목"
+        title="약속 정하기"
         footer={
           <button
             type="submit"
@@ -145,17 +142,16 @@ const Dashboard = () => {
       >
         <form
           id="create-meeting-form"
-          className={"flex flex-col gap-2"}
           onSubmit={createMeeting}
         >
-          <Fieldset>
+          <Fieldset className={"flex flex-col gap-2"}>
             <Field>
-              <Label className="text-sm/6 font-medium text-black">약속 제목</Label>
+              <Label className="text-sm/6 font-medium text-black">제목은 뭐로 할까요?</Label>
               <Input
                 className={clsx(
-                  'mt-3 block w-full rounded-lg border-none bg-white/5 px-3 py-1.5 text-sm/6 text-black',
+                  'mt-1 block w-full rounded-lg border-2 border-green-300 bg-white/5 px-3 py-1.5 text-sm/6 text-black',
                   'data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-blue-300',
-                  errors.title && "outline outline-red-500"
+                  errors.title && "border-none outline-2 outline-red-500"
                 )}
                 value={title}
                 onChange={(event) => {
@@ -171,57 +167,54 @@ const Dashboard = () => {
               )}
             </Field>
             <Field>
-              <Label className="text-sm/6 font-medium text-black">약속 설명</Label>
+              <Label className="text-sm/6 font-medium text-black">설명을 적어주세요</Label>
               <Textarea
                 className={clsx(
-                  'mt-3 block w-full rounded-lg border-none bg-white/5 px-3 py-1.5 text-sm/6 text-black',
-                  'data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-blue-300',
-                  errors.description && "outline outline-red-500"
+                  'mt-1 block w-full rounded-lg border-2 border-green-300 bg-white/5 px-3 py-1.5 text-sm/6 text-black',
+                  'data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-blue-300'
                 )}
                 value={description}
+                placeholder={"없어도 괜찮아요!"}
                 onChange={(event) => {
                   setDescription(event.target.value);
-                  if (errors.description) {
-                    setErrors((prev) => ({ ...prev, description: undefined }));
-                  }
                 }}
                 ref={descriptionRef}
               />
-              {errors.description && (
-                <p className="mt-1 text-xs text-red-600">{errors.description}</p>
-              )}
             </Field>
             <Field>
-              <Label className="text-sm/6 font-medium text-black">달 선택</Label>
+              <Label className="text-sm/6 font-medium text-black">날짜를 정해주세요</Label>
               <div
-                ref={monthFieldRef}
+                ref={dateFieldRef}
                 className={clsx(
-                  errors.month && "[&>div>button]:border-red-500"
+                  errors.date && "[&>div>button]:border-red-500"
                 )}
               >
                 <DatePicker
                   mode={"month"}
-                  value={month}
+                  value={date}
+                  style={clsx(
+                    "mt-1 block w-full rounded-lg border-2 border-green-300 bg-white/5 px-3 py-1.5 text-sm/6 text-black text-left"
+                  )}
                   onChange={(value) => {
-                    setMonth(value);
-                    if (errors.month) {
-                      setErrors((prev) => ({ ...prev, month: undefined }));
+                    setDate(value);
+                    if (errors.date) {
+                      setErrors((prev) => ({ ...prev, date: undefined }));
                     }
                   }}
                 />
               </div>
-              {errors.month && (
-                <p className="mt-1 text-xs text-red-600">{errors.month}</p>
+              {errors.date && (
+                <p className="mt-1 text-xs text-red-600">{errors.date}</p>
               )}
             </Field>
             <Field>
-              <Label className="text-sm/6 font-medium text-black">최대 인원</Label>
+              <Label className="text-sm/6 font-medium text-black">몇 명까지 초대할까요?</Label>
               <Select
                 className={clsx(
-                  'mt-3 block w-full appearance-none rounded-lg border-none bg-white/5 px-3 py-1.5 text-sm/6 text-black',
+                  'mt-1 block w-full appearance-none rounded-lg border-2 border-green-300 bg-white/5 px-3 py-1.5 text-sm/6 text-black',
                   'data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-white/25',
                   '*:text-black',
-                  errors.maxParticipants && "outline outline-red-500"
+                  errors.maxParticipants && "border-none outline-2 outline-red-500"
                 )}
                 value={maxParticipants}
                 onChange={(event) => {

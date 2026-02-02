@@ -6,6 +6,7 @@ export interface DatePickerProps {
   value?: dayjs.Dayjs | null;
   mode?: PickerMode;
   onChange?: (date: dayjs.Dayjs) => void;
+  style?: string;
 }
 
 export interface CalendarProps {

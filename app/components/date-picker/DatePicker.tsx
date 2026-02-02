@@ -12,6 +12,7 @@ export function DatePicker({
                              value = null,
                              mode = "date",
                              onChange,
+                             style,
                            }: DatePickerProps) {
   const [selected, setSelected] = useState<dayjs.Dayjs | null>(value);
   const [view, setView] = useState(value ?? dayjs());
@@ -29,10 +30,10 @@ export function DatePicker({
   };
 
   return (
-    <Popover className="relative inline-block">
+    <Popover className="relative">
       {({ close }) => (
         <>
-          <Popover.Button className="border px-3 py-2 rounded w-40 text-left">
+          <Popover.Button className={style}>
             {displayValue()}
           </Popover.Button>
 
