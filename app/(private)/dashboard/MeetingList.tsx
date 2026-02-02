@@ -27,7 +27,7 @@ const MeetingList = ({ refreshKey }: MeetingListProps) => {
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    let isActive = true;
+    const controller = new AbortController();
 
     const loadMeetings = async () => {
       if (meetings === null) {
@@ -39,32 +39,28 @@ const MeetingList = ({ refreshKey }: MeetingListProps) => {
       setHasError(false);
 
       try {
-        const response = await fetch("/api/meetings", { cache: "no-store" });
+        const response = await fetch("/api/meetings", {
+          cache: "no-store",
+          signal: controller.signal,
+        });
         const data = response.ok ? await response.json() : [];
-
-        if (!isActive) {
-          return;
-        }
-
         setMeetings(Array.isArray(data) ? data : []);
       } catch (error) {
-        if (!isActive) {
-          return;
+        if ((error as Error).name !== "AbortError") {
+          setHasError(true);
         }
-        setHasError(true);
       } finally {
-        if (!isActive) {
-          return;
+        if (!controller.signal.aborted) {
+          setIsLoading(false);
+          setIsRefreshing(false);
         }
-        setIsLoading(false);
-        setIsRefreshing(false);
       }
     };
 
     loadMeetings();
 
     return () => {
-      isActive = false;
+      controller.abort();
     };
   }, [refreshKey]);
 
