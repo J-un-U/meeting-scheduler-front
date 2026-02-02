@@ -7,7 +7,11 @@ import clsx from "clsx";
 import Modal from "@/app/components/Modal";
 import { DatePicker } from "@/app/components/date-picker/DatePicker";
 
-export default function CreateMeetingModal() {
+type CreateMeetingModalProps = {
+  onCreated?: () => void;
+};
+
+export default function CreateMeetingModal({ onCreated }: CreateMeetingModalProps) {
   const [isCreateMeetingOpen, setIsCreateMeetingOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -101,6 +105,7 @@ export default function CreateMeetingModal() {
       setMaxParticipants("1");
       setErrors({});
       closeCreateMeeting();
+      onCreated?.();
     } catch (error) {
       console.error("Failed to create meeting.", error);
     }
